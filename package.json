@@ -1,0 +1,11 @@
+{
+  "name": "firstlight",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Firstlight · Continuous Calibrated Crisis Prediction and Decision Engine for Meridian City",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build",
+    "dev": "cd frontend && npm run dev",
+    "test": "cd backend && uv run pytest tests -v"
+  }
+}

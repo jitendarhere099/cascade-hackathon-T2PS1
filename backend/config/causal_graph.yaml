@@ -1,0 +1,128 @@
+nodes:
+  HEAVY_RAIN:
+    label: "Heavy Rain Ingress"
+    importance: 0.9
+    category: "meteorological"
+  DRAINAGE_OVERLOAD:
+    label: "Drainage Overload"
+    importance: 0.85
+    category: "infrastructure"
+  STREET_FLOODING:
+    label: "Street Arterial Flooding"
+    importance: 0.95
+    category: "infrastructure"
+  TRAFFIC_COLLAPSE:
+    label: "Traffic Gridlock"
+    importance: 0.8
+    category: "transit"
+  EMERGENCY_CALL_SURGE:
+    label: "911 / Emergency Line Saturation"
+    importance: 0.85
+    category: "emergency"
+  HOSPITAL_SURGE:
+    label: "Hospital Emergency Dept Arrivals"
+    importance: 0.95
+    category: "medical"
+  POWER_SUBSTATION_TRIP:
+    label: "Substation Protective Trip"
+    importance: 0.9
+    category: "power"
+  TELECOM_DEGRADATION:
+    label: "Cell Tower & Fiber Link Loss"
+    importance: 0.75
+    category: "telecom"
+  GATEWAY_OUTAGE:
+    label: "Telemetry Gateway Silence"
+    importance: 0.8
+    category: "telecom"
+  AMBULANCE_DELAY:
+    label: "EMS Transit Delay"
+    importance: 0.85
+    category: "emergency"
+  DISPATCH_SATURATION:
+    label: "Dispatch Queue Overflow"
+    importance: 0.7
+    category: "emergency"
+  FLU_CLUSTER:
+    label: "Respiratory Viral Outbreak"
+    importance: 0.6
+    category: "medical_mimic"
+  RUMOR_WAVE:
+    label: "Social Panic Wave"
+    importance: 0.5
+    category: "social_mimic"
+  SENSOR_SILENCE:
+    label: "Downstream Sensor Silence"
+    importance: 0.65
+    category: "telemetry"
+
+edges:
+  - source: HEAVY_RAIN
+    target: DRAINAGE_OVERLOAD
+    delay_lognormal: { mu: 0.8, sigma: 0.3 }  # ~2.2 min
+    activation_prob: { CASCADE: 0.95, ISOLATED: 0.20, NOISE: 0.05, SENSOR_FAILURE: 0.01 }
+
+  - source: DRAINAGE_OVERLOAD
+    target: STREET_FLOODING
+    delay_lognormal: { mu: 0.7, sigma: 0.25 } # ~2.0 min
+    activation_prob: { CASCADE: 0.92, ISOLATED: 0.40, NOISE: 0.02, SENSOR_FAILURE: 0.0 }
+
+  - source: STREET_FLOODING
+    target: TRAFFIC_COLLAPSE
+    delay_lognormal: { mu: 0.9, sigma: 0.3 }  # ~2.5 min
+    activation_prob: { CASCADE: 0.90, ISOLATED: 0.30, NOISE: 0.01, SENSOR_FAILURE: 0.0 }
+
+  - source: TRAFFIC_COLLAPSE
+    target: EMERGENCY_CALL_SURGE
+    delay_lognormal: { mu: 0.6, sigma: 0.2 }  # ~1.8 min
+    activation_prob: { CASCADE: 0.95, ISOLATED: 0.35, NOISE: 0.05, SENSOR_FAILURE: 0.0 }
+
+  - source: EMERGENCY_CALL_SURGE
+    target: HOSPITAL_SURGE
+    delay_lognormal: { mu: 0.8, sigma: 0.25 } # ~2.2 min
+    activation_prob: { CASCADE: 0.88, ISOLATED: 0.25, NOISE: 0.01, SENSOR_FAILURE: 0.0 }
+
+  - source: STREET_FLOODING
+    target: POWER_SUBSTATION_TRIP
+    delay_lognormal: { mu: 1.2, sigma: 0.35 } # ~3.3 min
+    activation_prob: { CASCADE: 0.75, ISOLATED: 0.05, NOISE: 0.01, SENSOR_FAILURE: 0.0 }
+
+  - source: POWER_SUBSTATION_TRIP
+    target: TELECOM_DEGRADATION
+    delay_lognormal: { mu: 0.5, sigma: 0.2 }  # ~1.6 min
+    activation_prob: { CASCADE: 0.90, ISOLATED: 0.10, NOISE: 0.01, SENSOR_FAILURE: 0.0 }
+
+  - source: TELECOM_DEGRADATION
+    target: GATEWAY_OUTAGE
+    delay_lognormal: { mu: 0.4, sigma: 0.2 }  # ~1.5 min
+    activation_prob: { CASCADE: 0.85, ISOLATED: 0.05, NOISE: 0.01, SENSOR_FAILURE: 0.0 }
+
+  - source: TRAFFIC_COLLAPSE
+    target: AMBULANCE_DELAY
+    delay_lognormal: { mu: 0.7, sigma: 0.25 } # ~2.0 min
+    activation_prob: { CASCADE: 0.85, ISOLATED: 0.20, NOISE: 0.02, SENSOR_FAILURE: 0.0 }
+
+  - source: AMBULANCE_DELAY
+    target: HOSPITAL_SURGE
+    delay_lognormal: { mu: 0.6, sigma: 0.2 }  # ~1.8 min
+    activation_prob: { CASCADE: 0.80, ISOLATED: 0.15, NOISE: 0.01, SENSOR_FAILURE: 0.0 }
+
+  - source: EMERGENCY_CALL_SURGE
+    target: DISPATCH_SATURATION
+    delay_lognormal: { mu: 0.5, sigma: 0.2 }  # ~1.6 min
+    activation_prob: { CASCADE: 0.88, ISOLATED: 0.20, NOISE: 0.05, SENSOR_FAILURE: 0.0 }
+
+  - source: FLU_CLUSTER
+    target: HOSPITAL_SURGE
+    delay_lognormal: { mu: 1.5, sigma: 0.4 }  # slower ramp
+    activation_prob: { CASCADE: 0.05, ISOLATED: 0.10, NOISE: 0.90, SENSOR_FAILURE: 0.0 }
+
+  - source: RUMOR_WAVE
+    target: EMERGENCY_CALL_SURGE
+    delay_lognormal: { mu: 0.5, sigma: 0.3 }
+    activation_prob: { CASCADE: 0.10, ISOLATED: 0.10, NOISE: 0.85, SENSOR_FAILURE: 0.0 }
+
+  - source: GATEWAY_OUTAGE
+    target: SENSOR_SILENCE
+    delay_lognormal: { mu: 0.1, sigma: 0.1 }  # instant
+    activation_prob: { CASCADE: 0.99, ISOLATED: 0.99, NOISE: 0.99, SENSOR_FAILURE: 0.99 }

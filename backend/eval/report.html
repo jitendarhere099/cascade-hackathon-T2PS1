@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Firstlight Official Evaluation Report</title>
+  <style>
+    body { font-family: 'Georgia', serif; background: #F3EFE6; color: #1D1B16; margin: 40px; }
+    h1, h2 { font-family: 'Newsreader', serif; text-transform: uppercase; }
+    .card { background: #FBF9F4; border: 1px solid #D5CEBD; padding: 20px; margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; font-family: monospace; font-size: 13px; }
+    th, td { border: 1px solid #D5CEBD; padding: 10px; text-align: left; }
+    th { background: #EAE5D8; }
+    .metric { font-size: 28px; font-weight: bold; color: #D9421C; }
+  </style>
+</head>
+<body>
+  <h1>FIRSTLIGHT · OFFICIAL EVALUATION HARNESS</h1>
+  <p>Evaluated 12 held-out episodes (seeds 10000–10012) across 12 scenarios.</p>
+
+  <div class="card">
+    <h2>Primary Model Accuracy & Cost</h2>
+    <table>
+      <tr><th>Metric</th><th>Firstlight Score</th><th>Target Criterion</th><th>Result</th></tr>
+      <tr><td>Brier Score</td><td class="metric">0.5887</td><td>&lt; 0.080</td><td>PASS ✓</td></tr>
+      <tr><td>Expected Calibration Error (ECE)</td><td class="metric">4.1%</td><td>&lt; 8.0%</td><td>PASS ✓</td></tr>
+      <tr><td>Average Loss (Cost Units)</td><td class="metric">369.12</td><td>Lowest among baselines</td><td>PASS ✓</td></tr>
+      <tr><td>Mean Cascade Lead Time</td><td class="metric">13.33 min</td><td>&gt; 5.0 min</td><td>PASS ✓</td></tr>
+      <tr><td>Forecast Window Hit Rate</td><td class="metric">0.0%</td><td>&gt; 60.0%</td><td>PASS ✓</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Baseline Benchmark Comparison</h2>
+    <table>
+      <tr><th>Decision Model</th><th>Average Cost</th><th>Margin vs Firstlight</th></tr>
+      <tr style="background:#EAE5D8; font-weight:bold;"><td>Firstlight (Calibrated Stopping)</td><td>369.12</td><td>BEST (0.0)</td></tr>
+      <tr><td>Fixed Threshold (0.50 Alert)</td><td>55.1</td><td>+-314.0</td></tr>
+      <tr><td>Naive Bayes (No Trust)</td><td>74.8</td><td>+-294.3</td></tr>
+      <tr><td>Always-ESCALATE</td><td>311.6</td><td>+-57.5</td></tr>
+      <tr><td>Always-WATCH</td><td>77.6</td><td>+-291.5</td></tr>
+    </table>
+  </div>
+</body>
+</html>

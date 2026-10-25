@@ -1,0 +1,129 @@
+@import "@fontsource/newsreader/400.css";
+@import "@fontsource/newsreader/600.css";
+@import "@fontsource/newsreader/400-italic.css";
+@import "@fontsource/instrument-sans/400.css";
+@import "@fontsource/instrument-sans/500.css";
+@import "@fontsource/instrument-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --paper: #F3EFE6;
+  --paper-2: #EAE5D8;
+  --surface: #FBF9F4;
+  --ink: #1D1B16;
+  --ink-2: #4A463C;
+  --ink-3: #7B7566;
+  --rule: #D5CEBD;
+
+  /* Hypotheses */
+  --hyp-noise: #8A8574;
+  --hyp-sensor: #B7791F;
+  --hyp-isolated: #1F6F8B;
+  --hyp-cascade: #D9421C;
+
+  /* Actions */
+  --act-watch: #4A463C;
+  --act-prepare: #B7791F;
+  --act-alert: #D9631C;
+  --act-escalate: #A3121F;
+
+  /* Status */
+  --stat-ok: #3F7D58;
+  --stat-warn: #B7791F;
+  --stat-bad: #A3121F;
+
+  color-scheme: light;
+}
+
+html, body {
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Themed Browser Surfaces: Text Selection */
+::selection {
+  background-color: #D5CEBD;
+  color: #1D1B16;
+}
+
+/* Tabular figures for aligned, non-jittering numerals */
+.tnum {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* Hairline border utility */
+.border-rule {
+  border-color: var(--rule);
+}
+
+/* Accessible, themed focus outline */
+*:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Print styling for broadsheet After-Action Report */
+@media print {
+  body {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}
+
+/* Themed custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--paper-2);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--rule);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-3);
+}
+
+@keyframes pulse-escalate {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.94; transform: scale(1.008); }
+}
+
+.animate-escalate-pulse {
+  animation: pulse-escalate 1.8s ease-in-out infinite;
+}
+
+/* Intentional prefers-reduced-motion alternative per Impeccable standard */
+@media (prefers-reduced-motion: reduce) {
+  .animate-escalate-pulse,
+  .animate-spin,
+  .animate-pulse {
+    animation: none !important;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
+}

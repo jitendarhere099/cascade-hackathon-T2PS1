@@ -1,0 +1,42 @@
+missed_cascade:
+  D0: 100.0
+  g: 0.12
+  reductions:
+    WATCH: 0.0
+    PREPARE: 0.25
+    ALERT: 0.60
+    ESCALATE: 0.85
+
+false_alarms:
+  NOISE:
+    WATCH: 0.0
+    PREPARE: 1.0
+    ALERT: 8.0
+    ESCALATE: 40.0
+  SENSOR_FAILURE:
+    WATCH: 0.0
+    PREPARE: 1.0
+    ALERT: 8.0
+    ESCALATE: 40.0
+  ISOLATED:
+    WATCH: 0.0
+    PREPARE: 1.0
+    ALERT: 2.4  # ALERT cost 8.0 reduced by 70%
+    ESCALATE: 40.0  # ESCALATE not justified
+
+fatigue:
+  kappa: 0.5
+  half_life_min: 30.0
+
+hysteresis:
+  dwell_time_up: 3
+  dwell_time_down: 2
+  switching_penalty: 2.0
+  deescalate_cascade_prob_threshold: 0.15
+  deescalate_consecutive_minutes: 4
+
+actions:
+  - WATCH
+  - PREPARE
+  - ALERT
+  - ESCALATE
